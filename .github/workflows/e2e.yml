@@ -1,0 +1,55 @@
+name: E2E (Playwright)
+
+on:
+  workflow_dispatch:
+    inputs:
+      base_url:
+        description: Base URL (e.g. https://n8n.quotennica.com)
+        required: true
+        default: https://n8n.quotennica.com
+      run_workflow_crud:
+        description: Run CRUD tests (1 to enable)
+        required: false
+        default: '0'
+      webhook_test_url:
+        description: Optional webhook URL to test
+        required: false
+        default: ''
+
+jobs:
+  e2e:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Use Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install deps
+        run: npm ci
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps
+
+      - name: Run tests
+        env:
+          BASE_URL: ${{ inputs.base_url }}
+          BASIC_AUTH_USER: ${{ secrets.N8N_BASIC_AUTH_USER }}
+          BASIC_AUTH_PASSWORD: ${{ secrets.N8N_BASIC_AUTH_PASSWORD }}
+          RUN_WORKFLOW_CRUD: ${{ inputs.run_workflow_crud }}
+          WEBHOOK_TEST_URL: ${{ inputs.webhook_test_url }}
+        run: npm run test:e2e
+
+      - name: Upload Playwright report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: playwright-report
+          if-no-files-found: ignore
+

@@ -1,0 +1,14 @@
+{
+  "name": "n8n-kube-hetzner-e2e",
+  "private": true,
+  "version": "0.1.0",
+  "license": "UNLICENSED",
+  "type": "module",
+  "scripts": {
+    "test:e2e": "playwright test",
+    "test:e2e:report": "playwright show-report"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.47.2"
+  }
+}

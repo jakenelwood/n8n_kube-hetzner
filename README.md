@@ -118,3 +118,17 @@ Private GHCR setup
     --docker-password=GHCR_READ_TOKEN \
     --docker-email=you@example.com
 - The Rollout has `spec.template.spec.imagePullSecrets: [{ name: ghcr-creds }]` so pods can pull private images.
+
+
+End-to-end (Playwright) tests
+- Quick run:
+  - `BASE_URL=https://n8n.quotennica.com BASIC_AUTH_USER=... BASIC_AUTH_PASSWORD=... npm run test:e2e`
+  - Open report: `npm run test:e2e:report`
+- Optional gates (set when needed):
+  - `RUN_WORKFLOW_CRUD=1` to run workflow create/execute/delete tests (requires app access).
+  - `WEBHOOK_TEST_URL=https://n8n.quotennica.com/webhook/...` to validate a webhook response.
+  - `BASE_URL_HTTP=http://n8n.quotennica.com` to verify HTTP→HTTPS redirect.
+
+Notes:
+- Tests are non-destructive by default. CRUD and webhook tests are opt-in and should be executed with a disposable/test account and in a safe environment. Do not run destructive tests against production without approval.
+- HTTP Basic Auth is supported via `BASIC_AUTH_USER`/`BASIC_AUTH_PASSWORD` and is used automatically by Playwright config.
