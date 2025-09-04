@@ -6,7 +6,7 @@ on:
       n8n_ref:
         description: "n8n repo ref (tag/branch/sha)"
         required: true
-        default: "stable"
+        default: "master"
   push:
     tags:
       - 'release-*'
@@ -29,7 +29,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: n8n-io/n8n
-          ref: ${{ github.event.inputs.n8n_ref || 'stable' }}
+          ref: ${{ github.event.inputs.n8n_ref || 'master' }}
           path: n8n-src
 
       - name: Set up QEMU
@@ -54,7 +54,7 @@ jobs:
             VERSION=$(date +%Y.%m.%d)-${{ github.sha }}
           fi
           echo "version=$VERSION" >> $GITHUB_OUTPUT
-          echo "ref=${{ github.event.inputs.n8n_ref || 'stable' }}" >> $GITHUB_OUTPUT
+          echo "ref=${{ github.event.inputs.n8n_ref || 'master' }}" >> $GITHUB_OUTPUT
 
       - name: Build and push
         uses: docker/build-push-action@v6
@@ -69,4 +69,3 @@ jobs:
             ${{ env.IMAGE }}:${{ steps.meta.outputs.ref }}
           build-args: |
             N8N_VERSION=${{ steps.meta.outputs.version }}
-
