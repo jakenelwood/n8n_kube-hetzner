@@ -1,0 +1,7 @@
+# Ignore local env and prompts
+.env*
+initialprompt
+# Node, logs, misc
+node_modules/
+*.log
+.DS_Store
