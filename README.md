@@ -87,7 +87,7 @@ Use `dns/vercel-ensure-dns.sh` to point `n8n.quotennica.com` to your Traefik Loa
 End-to-end bring-up
 1) Build and push image
    - Run the GitHub Actions workflow "Build and Push n8n (multi-arch)" with `n8n_ref=stable` (or a tag).
-   - Make the GHCR package public (or add an imagePullSecret to the Rollout).
+   - If keeping GHCR private (recommended), create an imagePullSecret named `ghcr-creds` and the Rollout will use it.
 
 2) Seed ESO source secrets
    - Create `eso-secrets` namespace and the two source secrets as shown above.
@@ -109,3 +109,12 @@ Notes
 - Monitoring: Prometheus/Grafana are assumed present; add scrape annotations as needed.
 - Security: Keep `.env.master` out of Git. Migrate to a cloud secret manager (e.g., Vault, 1Password, AWS SM) with ESO in production.
 
+Private GHCR setup
+- Create a fine-grained GitHub PAT with `read:packages` only (no repo scopes) for your GitHub user or org.
+- Create the pull secret in the `n8n` namespace:
+  kubectl -n n8n create secret docker-registry ghcr-creds \
+    --docker-server=ghcr.io \
+    --docker-username=GITHUB_USERNAME \
+    --docker-password=GHCR_READ_TOKEN \
+    --docker-email=you@example.com
+- The Rollout has `spec.template.spec.imagePullSecrets: [{ name: ghcr-creds }]` so pods can pull private images.

@@ -29,6 +29,8 @@ spec:
         fsGroup: 1000
         runAsUser: 1000
         runAsGroup: 1000
+      imagePullSecrets:
+        - name: ghcr-creds
       containers:
         - name: n8n
           image: ghcr.io/jakenelwood/n8n:latest
@@ -109,4 +111,3 @@ spec:
         - name: data
           persistentVolumeClaim:
             claimName: n8n-data
-
