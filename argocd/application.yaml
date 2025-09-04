@@ -9,8 +9,7 @@ spec:
     repoURL: https://github.com/jakenelwood/n8n_kube-hetzner.git
     targetRevision: HEAD
     path: kubernetes/base
-    directory:
-      recurse: true
+    kustomize: {}
   destination:
     server: https://kubernetes.default.svc
     namespace: n8n
@@ -20,4 +19,3 @@ spec:
       selfHeal: true
     syncOptions:
       - CreateNamespace=true
-
