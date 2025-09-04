@@ -33,7 +33,7 @@ spec:
         - name: ghcr-creds
       containers:
         - name: n8n
-          image: ghcr.io/jakenelwood/n8n:latest
+          image: ghcr.io/jakenelwood/n8n:1.110.0
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 5678
