@@ -43,14 +43,17 @@ jobs:
           version: 9
           run_install: false
 
+      - name: Install dependencies
+        working-directory: n8n-src
+        run: |
+          pnpm install --frozen-lockfile
+
       - name: Build n8n (prepare compiled app)
         working-directory: n8n-src
         env:
           CI: 'true'
         run: |
-          node -v
-          pnpm -v
-          node scripts/build-n8n.mjs
+          pnpm run build:deploy
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
