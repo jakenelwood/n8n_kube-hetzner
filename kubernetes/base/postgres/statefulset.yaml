@@ -26,6 +26,7 @@ spec:
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 5432
+              protocol: TCP
               name: postgres
           envFrom:
             - secretRef:
